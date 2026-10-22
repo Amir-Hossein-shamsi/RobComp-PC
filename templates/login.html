@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Login · RobComp PC{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Sign in</h2>
+    <form method="post">
+        {% csrf_token %}
+        <p>
+            <label for="id_username">Username</label>
+            <input type="text" name="username" id="id_username" autofocus autocapitalize="none" autocomplete="username" required>
+        </p>
+        <p>
+            <label for="id_password">Password</label>
+            <input type="password" name="password" id="id_password" autocomplete="current-password" required>
+        </p>
+        <button type="submit">Sign in</button>
+    </form>
+</div>
+<p class="form-footer">Don't have an account? <a href="{% url 'register' %}">Create one</a></p>
+{% endblock %}

@@ -1,0 +1,349 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}RobComp PD-X{% endblock %}</title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --border-strong: #cbd5e1;
+            --accent: #0f172a;
+            --accent-hover: #334155;
+            --error: #dc2626;
+            --error-bg: #fef2f2;
+            --success: #059669;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --shadow: 0 1px 3px rgba(0,0,0,.05), 0 1px 2px rgba(0,0,0,.03);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body { height: 100%; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        /* Top Bar */
+        .topbar {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+        }
+        .topbar-inner {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .brand {
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: -.02em;
+        }
+        .brand span { color: var(--text-muted); font-weight: 400; margin-left: 4px; }
+
+        nav.topbar-nav { display: flex; gap: 1.5rem; }
+        nav.topbar-nav a {
+            color: var(--text-muted);
+            font-size: .9rem;
+            font-weight: 500;
+            transition: color .2s ease;
+        }
+        nav.topbar-nav a:hover { color: var(--text); }
+
+        /* Main Container */
+        main {
+            flex: 1;
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+
+        /* Card */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -.03em;
+            margin-bottom: 1.5rem;
+        }
+
+        /* =========================================
+           DJANGO FORM STYLES (Fixes as_p issues)
+           ========================================= */
+        form p {
+            margin-bottom: 1.25rem;
+            display: block;
+        }
+        form p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Labels */
+        form p > label {
+            display: block;
+            font-size: .875rem;
+            font-weight: 500;
+            margin-bottom: .5rem;
+            color: var(--text);
+        }
+
+        /* Inputs */
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="url"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: .75rem 1rem;
+            border: 1px solid var(--border-strong);
+            border-radius: var(--radius-sm);
+            font-size: .95rem;
+            font-family: inherit;
+            background: var(--surface);
+            color: var(--text);
+            transition: border-color .15s ease, box-shadow .15s ease;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.08);
+        }
+
+        /* File Input (Custom styled to prevent overflow) */
+        input[type="file"] {
+            width: 100%;
+            padding: .6rem;
+            font-size: .85rem;
+            border: 1px dashed var(--border-strong);
+            border-radius: var(--radius-sm);
+            background: var(--bg);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        input[type="file"]::file-selector-button {
+            margin-right: 1rem;
+            padding: .5rem .9rem;
+            border: 1px solid var(--border-strong);
+            border-radius: 6px;
+            background: var(--surface);
+            color: var(--text);
+            font-size: .85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background .2s;
+        }
+        input[type="file"]::file-selector-button:hover {
+            background: var(--border);
+        }
+
+        /* Checkbox Rows (Django clears image fields with a checkbox) */
+        form p:has(input[type="checkbox"]) {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: .75rem 1rem;
+            border-radius: var(--radius-sm);
+            margin-top: .5rem;
+        }
+        form p:has(input[type="checkbox"]) > label {
+            margin-bottom: 0;
+            font-size: .85rem;
+            font-weight: 400;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+        input[type="checkbox"] {
+            width: 1.15rem;
+            height: 1.15rem;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        /* Help Text */
+        .helptext {
+            display: block;
+            font-size: .8rem;
+            color: var(--text-muted);
+            margin-top: .4rem;
+            line-height: 1.4;
+        }
+
+        /* Form Errors */
+        .errorlist {
+            list-style: none;
+            background: var(--error-bg);
+            color: var(--error);
+            border: 1px solid rgba(220, 38, 38, 0.2);
+            padding: .6rem .8rem;
+            border-radius: 6px;
+            font-size: .8rem;
+            margin-bottom: .6rem;
+        }
+
+        /* Buttons */
+        button[type="submit"], .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: .85rem 1.5rem;
+            background: var(--accent);
+            color: #fff;
+            border: 1px solid var(--accent);
+            border-radius: var(--radius-sm);
+            font-size: .95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background .15s ease, transform .05s ease;
+            margin-top: .5rem;
+        }
+        button[type="submit"]:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+        button[type="submit"]:active { transform: translateY(1px); }
+
+        /* Form Footer (Links) */
+        .form-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: .9rem;
+            color: var(--text-muted);
+        }
+        .form-footer a {
+            color: var(--text);
+            font-weight: 500;
+            border-bottom: 1px solid var(--border-strong);
+            padding-bottom: 1px;
+            transition: border-color .15s ease;
+        }
+        .form-footer a:hover { border-color: var(--text); }
+
+        /* Django Messages */
+        ul.messages {
+            list-style: none;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+        }
+        ul.messages li {
+            padding: .8rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: .875rem;
+            background: var(--surface);
+        }
+        ul.messages li.error { color: var(--error); border-color: rgba(220,38,38,.25); background: var(--error-bg); }
+        ul.messages li.success { color: var(--success); border-color: rgba(5,150,105,.25); background: rgba(5,150,105,.04); }
+
+        /* Profile Page Specifics */
+        .profile-head {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .profile-head .text-container { min-width: 0; }
+        
+        .avatar {
+            width: 56px; height: 56px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid var(--border-strong);
+            background: var(--bg);
+            flex-shrink: 0;
+        }
+        .avatar-placeholder {
+            width: 56px; height: 56px;
+            border-radius: 50%;
+            background: var(--bg);
+            border: 1px solid var(--border-strong);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        .profile-head .name { font-size: 1.1rem; font-weight: 600; word-break: break-word; }
+        .profile-head .meta { font-size: .825rem; color: var(--text-muted); margin-top: 2px; }
+
+        .logout-link {
+            display: block;
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: .875rem;
+            color: var(--text-muted);
+            transition: color .2s ease;
+        }
+        .logout-link:hover { color: var(--error); }
+
+        /* Mobile Adjustments */
+        @media (max-width: 480px) {
+            main { padding: 2rem 1rem; }
+            .card { padding: 1.5rem; }
+            .topbar-inner { padding: 1rem 1.25rem; }
+            .profile-head { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <a class="brand" href="/">RobComp</a>
+            <nav class="topbar-nav">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}">Profile</a>
+                    <a href="{% url 'logout' %}">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                    <a href="{% url 'register' %}">Register</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

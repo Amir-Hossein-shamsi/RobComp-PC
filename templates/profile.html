@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile · RobComp PC{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="profile-head">
+        {% if user.profile.photo %}
+            <img class="avatar" src="{{ user.profile.photo.url }}" alt="Your photo">
+        {% else %}
+            <div class="avatar-placeholder">{{ user.username|first }}</div>
+        {% endif %}
+        <div class="text-container">
+            <div class="name">{{ user.username }}</div>
+            <div class="meta">Manage your account details</div>
+        </div>
+    </div>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ user_form.as_p }}
+        {{ profile_form.as_p }}
+        <button type="submit">Save changes</button>
+    </form>
+</div>
+<a class="logout-link" href="{% url 'logout' %}">Log out</a>
+{% endblock %}

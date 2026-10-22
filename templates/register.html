@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Register · RobComp PC{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Create your account</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create account</button>
+    </form>
+</div>
+<p class="form-footer">Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
+{% endblock %}
