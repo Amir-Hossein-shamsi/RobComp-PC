@@ -1,4 +1,4 @@
-# RobComp-PC-X – Real-Time Data Pipeline
+# RobComp-PC – Real-Time Data Pipeline
 
 A complete real‑time data pipeline that ingests market data from a WebSocket feed, processes it through Redis Pub/Sub, stores it in MySQL, and exposes it via a **Django** web application (human‑readable) and a **FastAPI** API (machine‑readable). The entire stack is containerised with Docker Compose for easy local deployment.
 
