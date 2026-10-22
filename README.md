@@ -83,7 +83,7 @@ FASTAPI_API_KEY=4dbf5a2525252fbbe19285692bbd7e3e # I used  <openssl rand -hex 16
 FASTAPI_API_KEY_HEADER=X-API-Key
 
 # Django
-DJANGO_SECRET_KEY=dadkavan-django-secret-key
+DJANGO_SECRET_KEY=RobComp-PC-django-secret-key
 DJANGO_DEBUG=True
 DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,django,nginx
 
