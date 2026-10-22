@@ -288,5 +288,5 @@ docker-compose logs worker_b
 ```
 
 **Submitted by:** AmirHosseinShamsi  
-**GitHub Repository:** [RobComp-PC-X](https://github.com/Amir-Hossein-shamsi/RobComp-PD-X)  
+**GitHub Repository:** [RobComp-PC](https://github.com/Amir-Hossein-shamsi/RobComp-PC)  
 **Date:** August 2026
